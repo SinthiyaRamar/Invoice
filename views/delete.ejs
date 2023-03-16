@@ -1,0 +1,34 @@
+<div class="invoicedeletepage" >
+    <div class="stylediv" >
+<div class="deletecontent">
+    <h2 class="confirmtext" >Confirm Deletion</h2>
+  <p>Are you sure you want to delete invoice <%=clientid%>? This action cannot be undone.</p>
+  <div class="deletebuttondiv">
+    <div class="deletepagecancelbutton" onclick="canceldeletepage()" >Cancel</div>
+    <div class="deletepagedeletebutton" onclick="deleteInvoicePage('<%=idvalue%>')" >Delete</div>
+    
+  </div>
+</div>
+</div>
+</div>
+<script >
+    function canceldeletepage(){
+        $('.invoicedeletepage').css("display","none");
+    }
+    function deleteInvoicePage(idvalue){
+        fetch(`/deleteinvoice/${idvalue}`,
+        {
+            method: 'POST',
+            headers:{
+                headers: { 'Content-Type': 'application/json;charset=utf-8' },
+
+            }
+
+        })
+        .then((response)=>{
+            if(response.ok){
+                window.location.href='/index';
+            }
+        })
+    }
+</script>

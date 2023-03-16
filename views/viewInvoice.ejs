@@ -1,0 +1,262 @@
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<% var details=details[0]%>
+<%var detailsLength= details.length %>
+<% let item = details.item %>
+<% let itemValues = JSON.parse(item) %>
+<% let itemLength = itemValues.length %>
+<div class="viewInvoicedetails" >
+<div class="viewinvoicewholediv">
+    <div id="slidebar" >
+        <div id="logoimgdiv" >
+         <img id="logoimg" src="../assets/logo.svg" />
+        </div>
+        <div>
+          
+        </div>  
+      <div id="themediv" >
+          <img class="themeimg" onclick="themechange()" src="../assets/icon-moon.svg" />
+        </div>      
+            <div id="avatardiv" >
+              <img id="avatarImg" src="../assets/image-avatar.jpg"/>
+          
+        </div>
+
+    </div>
+    <div class="maindetails">
+       <div class="gobackimgdiv" >
+        <div class="gobackdiv">
+            <div onclick="goBack()" class="gobackstyle">
+                <img  class="rightarrowimg" src="../assets/icon-arrow-left.svg"/><h5>  Go Back</h5>
+            </div>
+        </div>
+
+       </div>
+       <div class="viewinvoicefirsthalf" >
+           <div class="editcontentdetails">
+            <div class="editcontentdiv">
+                <p class="viewinvoicestatustext" >Status</p>
+            </div>
+            <div class="editcontentdiv">
+                <% if(details.status=='Draft'){ %>
+                    <!-- <div class="draftstylediv" > -->
+                      <li class="draftstyle" > <%=details.status %></li>
+                     <!-- </div> -->
+                 <% } %>
+                 <% if(details.status=='Pending'){ %>
+                    <li class="pendingstyle" > <%=details.status %></li>
+               <% } %>
+               <% if(details.status=='Paid'){ %>
+                <li class="paidstyle" > <%=details.status %></li>
+              <% } %>
+            </div>
+            <div class="editcontentdiv">
+            </div>
+            <div class="editcontentdiv">
+                <div class="editdiv" onclick="editInvoice()" >Edit</div>
+            </div>
+            <div class="editcontentdiv">
+                <div class="deletediv" onclick="deleteInvoice()" >Delete</div>
+            </div>
+            <div class="editcontentdiv">
+                <div class="markaspaiddiv" onclick="markaspaidinvoice('<%=details.id%>')" >Mark as Paid</div>
+             
+            </div>
+           </div>
+       
+</div>
+<div class="viewinvoicesecondhalf" >
+    <div class="viewinvoicefullcontent">
+        <div class="companydetails" >
+            <div id="clientdetails" >
+           <h3> #<%=details.clientid%></h3>
+            <h4 class="projectdescriptiondetails" ><%=details.projectDescription%></h4>
+        </div>
+        <div class="companydetailscontent" >
+          <p>19 Union Terrace</p>
+          <p>London</p>
+          <p>E1 3EZ</p>
+          <p>United Kingdom</p>
+        </div>
+        </div>
+     <div class="clientdetailsdiv">
+        <div class="date" >
+           <div class="invoicedate">
+               <p class="textstyle" >Invoice Date</p>
+               <% let date= details.date %>
+               <%let dateParts= date.toISOString().substring(0, 10);%>
+               <% let datevalue=new Date(dateParts) %>
+               <% let options={day:"numeric",month:"short",year:"numeric"}%>
+             <h3 class="bigtextstyle"editformdiv >  <%= datevalue.toLocaleString('en-US',options)%></h3>
+           </div>
+           <div>
+                 <p class="textstyle" > Payment Due</p>
+               <h3 class="bigtextstyle" ><%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %></h3>
+                 
+            </div>
+        </div>
+          <div class="clientbilltodiv">
+            <p class="textstyle" >Bill to</p>
+            <h3 class="bigtextstyle" ><%=details.clientName%></h4>
+            <p class="textstyle" ><%=details.streetAddress%></p>
+            <p class="textstyle"><%=details.city%></p>
+            <p class="textstyle"><%=details.postcode%></p>
+            <p class="textstyle"><%=details.country%></p>
+          </div>
+          <div class="maildiv" >
+             <p class="textstyle">Send to</p>
+             <h3 class="bigtextstyle" ><%=details.clientEmail%></h3>
+          </div>
+     </div>
+     <div class="displayitemdiv" >
+        <div class="itemsdiv" >
+            <div class="itemsdivgrid" >
+               <div class="griditemdiv" >
+                  <div class="displayitemnamediv" >
+                    Item Name
+                  </div>
+                  <div class="displayqtydiv" >
+                    Qty.
+                  </div>
+                  <div class="displaypricediv" >
+                    Price
+                  </div>
+                  <div class="displaytotaldiv" >
+                    Total
+                  </div>
+             </div>
+            </div>
+           <% itemValues.forEach((items)=>{ %>
+            <div class="itemsdivgrid" >
+                <div class="griditemdiv" >
+                   <div class="displayitemnamedivs" >
+                     <%=items.itemname%>
+                   </div>
+                   <div class="displayqtydiv" >
+                     <%=items.itemqty %>
+                   </div>
+                   <div class="displaypricediv" >
+                    £<%=items.itemprice %>
+                   </div>
+                   <div class="displaytotaldivs" >
+                    £<%=items.itemtotal %>
+                   </div>
+              </div>
+             </div>
+           <% }) %>
+        </div>
+        <div class="amountduediv" >
+            <p class="amountduetext" >Amount Due</p>
+       
+            <% let total = 0 %>
+            <% itemValues.forEach((item) => { %>
+              <% total += Number(item.itemtotal) %>
+            <% }) %>
+            <p class="totalvaluetextstyle" >£<%= total %></p>
+
+        </div>
+     </div>
+    </div>
+</div>
+<%- include('editForm',{detailscontent:details}) %>
+<%- include('delete',{clientid:details.clientid,idvalue:details.id})%>
+
+
+       </div>
+    </div>
+
+</div>
+<script src="../js/script.js"></script>
+<script>
+    function goBack(){
+        window.location.href='/index';
+    }
+    function deleteInvoice(){
+        $('.invoicedeletepage').css("display","block");
+        $('.invoicedeletepage').slideDown("slow");
+
+
+    }
+    function editInvoice(){
+        $('.formpage').css("display","block");
+        $('.formpage').slideDown("slow");
+
+
+    }
+    function markaspaidinvoice(idvalue){
+        fetch(`/paidinvoice/${idvalue}`,
+        {
+            method: 'POST',
+            headers:{
+                headers: { 'Content-Type': 'application/json;charset=utf-8' },
+
+            }
+        })
+        .then((response)=>{
+            if(response.ok){
+                window.location.href=`/viewInvoice/${idvalue}`;
+            }
+        })
+    
+    }
+    themechange()
+function themechange(){
+    if($('.themeimg').attr('src')=='../assets/icon-moon.svg'){
+       $('.themeimg').attr('src','../assets/icon-sun.svg');
+       $('.viewInvoicedetails').css("background","#141625");
+       $('.gobackstyle').css("color","white");
+       $('.editcontentdetails').css("background-color","#252945");
+       $('.viewinvoicefullcontent').css("background-color","#252945");
+       $('#clientdetails').css("color","white");
+       $('.bigtextstyle').css("color","white");
+       $('.itemsdiv').css("background-color","rgb(32 36 57)");
+       $('.displayitemnamedivs').css("color","white");
+       $('.displaytotaldivs').css("color","white");
+       $('.formfirsthalf').css("background-color","#141625");
+       $('input').css("background-color","#373b53");
+       $('input').css("color","white");
+       $('input').css("border","none")
+       $('.newinvoicetextform').css("color","white");
+       $('#paymentselects').css("background-color","#373b53");
+       $('#paymentselects').css("color","white");
+       $('.deletecontent').css("background","#252945")
+       $('.deletecontent').css("color","white")
+       $('.editcontentdetails').css("box-shadow","rgb(0 0 1 / 20%) 0px 7px 29px 0px")
+       $('.viewinvoicefullcontent').css("box-shadow","rgb(0 0 1 / 20%) 0px 7px 29px 0px")
+       $('.forminput').css("width","99%")
+       $('input').css("border","1px solid white")
+
+
+
+    }
+    else if($('.themeimg').attr('src')=='../assets/icon-sun.svg'){
+       $('.themeimg').attr('src','../assets/icon-moon.svg');
+       $('.viewInvoicedetails').css("background","#f8f8fb");
+       $('.gobackstyle').css("color","black");
+       $('.editcontentdetails').css("background-color","white");
+       $('.viewinvoicefullcontent').css("background-color","white");
+       $('#clientdetails').css("color","black");
+       $('.bigtextstyle').css("color","black");
+       $('.itemsdiv').css("background-color","#f8f8fb");
+       $('.displayitemnamedivs').css("color","black");
+       $('.displaytotaldivs').css("color","black");
+       $('.formfirsthalf').css("background-color","white");
+       $('input').css("background-color","white");
+       $('input').css("color","black");
+       $('input').css("border","1px solid black")
+       $('.newinvoicetextform').css("color","black");
+       $('#paymentselects').css("background-color","white");
+       $('#paymentselects').css("color","black");
+       $('.deletecontent').css("background","white")
+       $('.deletecontent').css("color","black")
+       $('.editcontentdetails').css("box-shadow","rgb(100 100 111 / 20%) 0px 7px 29px 0px")
+       $('.viewinvoicefullcontent').css("box-shadow","rgb(100 100 111 / 20%) 0px 7px 29px 0px")
+       $('.forminput').css("width","99%")
+
+
+
+
+    }
+}
+    
+</script>

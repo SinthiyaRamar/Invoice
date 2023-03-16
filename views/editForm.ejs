@@ -1,0 +1,304 @@
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
+<div class="formpage" >
+<% var details=detailscontent%>
+<%var detailsLength= details.length %>
+<% let item = details.item %>
+<% let itemValues = JSON.parse(item) %>
+<% let itemLength = itemValues.length %>
+<div class="editformdiv" id="editformwholediv">
+
+        <div class="formfirsthalf" >
+            <div  class="formdetails" >
+                <h2 class="newinvoicetextform" >New Invoice</h2>
+                <h5 class="billformtext" >Bill Form</h5>
+                <p class="text streetaddress" >Street Address</p>
+                <input class="forminput"  value="19 Union Terrace" type="text" required/>
+                <div class="shopdetails" >
+                   <div class="detailsvalue" >
+                      <p class="text">City</p>
+                      <input class="cityinput" value="London" type="text" required/>
+                    </div>
+                   <div class="detailsvalue" >
+                      <p class="text">Post Code</p>
+                      <input class="postcodeinput" value="E1 3EZ" type="text" required/>
+                   </div>
+                   <div class="detailsvalue" >
+                       <p class="text">Country</p>
+                       <input class="countryinput" value="United Kingdom" type="text" required/>
+                    </div>
+  
+            </div>
+            <h5 class="billformto" >Bill To</h5>
+            <p class="text">Client's Name</p>
+            <input id="clientnames" type="text" value="<%=details.clientName%>" class="forminput" required/>
+            <p class="text">Client's Email</p>
+            <input  id="clientemails" type="email" value="<%=details.clientEmail%>" class="forminput" required/>
+            <p class="text">Street Address</p>
+            <input id="clientstreetaddress" value="<%=details.streetAddress%>" type="text" class="forminput" required/>
+            <div class="shopdetails" >
+             <div class="detailsvalue" >
+              <p class="text">City</p>
+              <input id="clientcity" class="cityinput" value="<%=details.city%>" type="text" required/>
+             </div>
+             <div class="detailsvalue" >
+              <p class="text">Post Code</p>
+              <input id="clientpostcode" class="postcodeinput" value="<%=details.postcode%>" type="text" required/>
+             </div>
+             <div class="detailsvalue" >
+              <p class="text">Country</p>
+              <input id="clientcountry" class="countryinput" value="<%=details.country%>" type="text" required/>
+             </div>
+  
+            </div>
+            <div class="moredetails" >
+            <div class="detailsvalue" >
+              <p class="text" >InvoiceDate</p>
+              <% let date= details.date %>
+              <%let dateParts= date.toISOString().substring(0, 10);%>
+              <% let datevalue=new Date(dateParts) %>
+              <input id="orderdate" name="date" value="<%=dateParts %>" class="dateinput" type="date" required/>
+ 
+            </div>
+             <div class="detailsvalue" >
+               <p class="text" >Payment Terms</p>
+               <select id="paymentselects" class="paymentselect" >
+                 <option value="Net 1 Days" <% if(details.paymentterms=='Net 1 Days'){%> selected <%}%> >Net 1 Days</option>
+                 <option value="Net 7 Days" <% if(details.paymentterms=='Net 7 Days'){%> selected <%}%> >Net 7 Days</option>
+                 <option value="Net 14 Days" <% if(details.paymentterms=='Net 14 Days'){%> selected <%}%>  >Net 14 Days</option>
+                 <option value="Net 30 Days" <% if(details.paymentterms=='Net 30 Days'){%> selected <%}%>  >Net 30 Days</option>
+ 
+               </select>public double getAverageRank(String name, String gender){
+                int rank1 = getRank(2012,name,gender);
+                int rank2 = getRank(2013,name,gender);
+                int rank3 = getRank(2014,name,gender);
+                double averageRank = (rank1+rank2+rank3)/(3);
+                return averageRank;
+                }
+                public int getTotalBirthsRankedHigher(int year,String name, String gender){
+                FileResource fr1 = new FileResource("data/yob"+year+"short.csv");
+                int rank = 0;
+                int count =0;
+                for (CSVRecord rec : fr1.getCSVParser(false)) {
+                    rank++;
+                    if(rec.get(0).equals(name) && rec.get(1).equals(gender)){
+                        break;
+                    }
+                    if(rec.get(1).equals(gender)){
+                    count += Integer.parseInt(rec.get(2));
+                    }
+                    }
+                    return count;
+                }
+             </div>
+            </div>
+            <p class="text">Project Description</p>
+            <input id="clientprojectdescription" value="<%=details.projectDescription%>" type="text" class="forminput" required/>
+            <h4 class="itemtasktext" >Item List</h4>
+            <div class="itemdiv" >
+                  <div class="itemtitle" >
+                     <p class="text">Item Name</p>
+                     <p class="text">Qty.</p>
+                     <p class="text">Price</p>
+                     <p class="text">Total</p>
+                  
+                  </div>
+                  <% var itemcontentcount=0 %>
+                  <% itemValues.forEach((itemcontent)=>{ %>
+                    <% itemcontentcount++ %>
+                    <input id="itemcountvalue" style="display:none" type="number" value='<%=itemcontentcount%>' />
+                    <div id="itemCount1" class="itemtitle" >
+                        <input id="itemname<%=itemcontentcount%>" value="<%=itemcontent.itemname%>" class="iteminput" type="text" required/>
+                        <input id="qty<%=itemcontentcount%>"  value="<%=itemcontent.itemqty%>" oninput="changetotal('<%=itemcontentcount%>')" class="iteminput" type="number" required/>
+                        <input id="price<%=itemcontentcount%>"  value="<%=itemcontent.itemprice%>" oninput="changetotal('<%=itemcontentcount%>')" class="iteminput" type="number" required/>
+                        <input id="total<%=itemcontentcount%>"  value="<%=itemcontent.itemtotal%>" class="iteminput" type="number"/>
+                        <div class="deleteitemimg" ><img onclick="deleteItem('itemCount<%=itemcontentcount%>')" class="deleteimg" src="../assets/icon-delete.svg"/></div>
+   
+                    </div>
+                 <% }) %>
+               
+            </div>
+            <p></p>
+            <div onclick="newItemAdd()" class="newitemadddiv" ><p>+Add New Item</p></div>
+         </div>
+         <div class="buttondiv" >
+               <div class="buttondivs" >
+              <div class="discarddiv" id="editdiscardbutton" >Cancel</div>
+               </div>
+               <div></div>
+               <!-- <div class="buttondivs" >
+                 <div onclick="editdraft('<%=details.id%>','<%=details.clientid%>')" class="draftdiv" >Save as Draft</div>
+               </div> -->
+            <div></div>
+
+               <div class="buttondivs" >
+                 <div onclick="editsend('<%=details.id%>','<%=details.clientid%>','<%=details.status%>')" class="savediv"  >Save changes</div>
+ 
+               </div>
+         </div>
+         </div>
+        <div class="formsecondhalf" >
+
+        </div>
+
+
+</div>
+</div>
+<script>
+    $('.discarddiv').click(function(){
+        $('.formpage').css("display","none")
+    })
+    function newItemAdd(){
+        let itemCount=Number($('#itemcountvalue').val())+1;
+        $('#itemcountvalue').val(itemCount)
+        $('.itemdiv').append(`<div id="itemCount${itemCount}" class="itemtitle" >
+                     <input id="itemname${itemCount}" class="iteminput" type="text"/>
+                     <input id="qty${itemCount}" oninput="changetotal(${itemCount})" class="iteminput" type="number"/>
+                     <input id="price${itemCount}" oninput="changetotal(${itemCount})" class="iteminput" type="number"/>
+                     <input id="total${itemCount}" class=clientid"iteminput" type="number"/>
+                     <div class="deleteitemimg" ><img onClick="deleteItem('itemCount${itemCount}')" class="deleteimg" src="../assets/icon-delete.svg"/></div>
+
+                 </div>`)
+
+    }
+    function deleteItem(itemcounts){
+        $(`#${itemcounts}`).remove();
+       
+    }
+    function changetotal(count){
+
+        $(`#total${count}`).val(Number($(`#qty${count}`).val())*Number($(`#price${count}`).val()));
+        // alert(Number($(`#qty${count}`).val())*Number($(`#price${count}`).val()))
+    }
+   function editdraft(id,cliendidvalue){
+    var totalitemCount=Number($('#itemcountvalue').val());
+        var itemarray=[];
+        console.log(totalitemCount)
+        for(let i=1; i<=totalitemCount; i++){
+           if($(`#itemname${i}`).val()!=undefined && $(`#qty${i}`).val()!=undefined && $(`#total${i}`).val()!=undefined ){
+           let itemobject={
+            itemname:$(`#itemname${i}`).val(),
+            itemqty:$(`#qty${i}`).val(),
+            itemprice:$(`#price${i}`).val(),
+            itemtotal:$(`#total${i}`).val(),
+
+           }
+           itemarray.push(itemobject);
+        
+        }
+        console.log(itemarray)
+        }
+             //    console.log(clientidvalue)
+    console.log(itemarray)
+        var draftDetails={
+            id:id,
+            clientid:cliendidvalue,
+            clientname:$('#clientnames').val(),
+            clientdetails:$('#clientemails').val(),
+            clientstreetaddress:$('#clientstreetaddress').val(),
+            clientcity:$('#clientcity').val(),
+            clientpostcode:$('#clientpostcode').val(),
+            clientcountry:$('#clientcountry').val(),
+            clientdate:$('#orderdate').val(),
+            clientpayment:$('#paymentselects').val(),
+            clientprojectdescription:$('#clientprojectdescription').val(),
+            clientstatus:"Draft",
+            clientitem:itemarray,
+        }
+        console.log(draftDetails);
+if($('#clientnames').val()!="" && $('#clientemails').val()!="" && $('#clientstreetaddress').val()!="" && $('#clientcity').val()!="" && $('#clientpostcode').val()!="" && $('#clientcountry').val()!="" && $('#orderdate').val()!="" && $('#paymentselects').val()!="" &&$('#clientprojectdescription').val()!="" ){
+        fetch('/editdraft', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ 
+                editdraftobject: draftDetails 
+            })
+             })
+            .then(response => {
+            if (response.ok) {
+                  console.log('Draft object sent successfully');
+                  $('.editFormpage').css("display","none");
+                  window.location.href=`/viewInvoice/${id}`;
+
+
+            } else {
+                   console.error('Error sending draft object');
+            }
+            })
+            .catch(error => {
+              console.error(error);
+           });
+        }
+        else{
+        alert("Something error")
+    }
+
+
+   }
+
+   function editsend(id,cliendidvalue,status){
+    var totalitemCount=Number($('#itemcountvalue').val());
+        var itemarray=[];
+        console.log(totalitemCount)
+        for(let i=1; i<=totalitemCount; i++){
+           if($(`#itemname${i}`).val()!=undefined && $(`#qty${i}`).val()!=undefined && $(`#total${i}`).val()!=undefined ){
+           let itemobject={
+            itemname:$(`#itemname${i}`).val(),
+            itemqty:$(`#qty${i}`).val(),
+            itemprice:$(`#price${i}`).val(),
+            itemtotal:$(`#total${i}`).val(),
+
+           }
+           itemarray.push(itemobject);
+        
+        }
+        console.log(itemarray)
+        }
+             //    console.log(clientidvalue)
+    console.log(itemarray)
+        var draftDetails={
+            id:id,
+            clientid:cliendidvalue,
+            clientname:$('#clientnames').val(),
+            clientdetails:$('#clientemails').val(),
+            clientstreetaddress:$('#clientstreetaddress').val(),
+            clientcity:$('#clientcity').val(),
+            clientpostcode:$('#clientpostcode').val(),
+            clientcountry:$('#clientcountry').val(),
+            clientdate:$('#orderdate').val(),
+            clientpayment:$('#paymentselects').val(),
+            clientprojectdescription:$('#clientprojectdescription').val(),
+            clientstatus:status,
+            clientitem:itemarray,
+        }
+        console.log(draftDetails);
+if($('#clientnames').val()!="" && $('#clientemails').val()!="" && $('#clientstreetaddress').val()!="" && $('#clientcity').val()!="" && $('#clientpostcode').val()!="" && $('#clientcountry').val()!="" && $('#orderdate').val()!="" && $('#paymentselects').val()!="" &&$('#clientprojectdescription').val()!="" ){
+        fetch('/editsend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ 
+                editdraftobject: draftDetails 
+            })
+             })
+            .then(response => {
+            if (response.ok) {
+                  console.log('Send object sent successfully');
+                  $('.editFormpage').css("display","none");
+                  window.location.href=`/viewInvoice/${id}`;
+
+
+            } else {
+                   console.error('Error sending send object');
+            }
+            })
+            .catch(error => {
+              console.error(error);
+           });
+        }
+        else{
+        alert("Something error")
+    }
+
+
+   }
+
+</script>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title></title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+
+</head>
+<body>
+  <% var details=invoicedetails%>
+  <%var detailsLength= details.length %>
+    <div id="whole-container" >
+
+      <div id="slidebar" >
+          <div id="logoimgdiv" >
+           <img id="logoimg" src="./assets/logo.svg" />
+          </div>
+          <div>
+            
+          </div>  
+        <div id="themediv" >
+            <img class="themeimg" onclick="theme()" src="./assets/icon-moon.svg" />
+          </div>      
+              <div id="avatardiv" >
+                <img id="avatarImg" src="./assets/image-avatar.jpg"/>
+            
+          </div>
+
+      </div>
+
+    <div id="maincontent" >
+
+      <div id="invoicefirsthalf" >
+        <div id="invoicenamediv" >
+           <div><h1 id="invoicename" >Invoices</h1>
+          These are <%=detailsLength%> total invoices</div> 
+        </div>
+        <div id="filterDiv">
+          Filter by <select id="statusselecttag" value="Filter by status">
+            <option style="display:none"></option>
+            <option value="All">All</option>
+            <option value="Draft">Draft</option>
+            <option value="Paid">Paid</option>
+            <option value="Pending">Pending</option>
+          </select>
+        </div>
+        <div id="newinvoicediv">
+          <div class="newinvoiceform" id="newinvoicebutton" >
+            <div class="newinvoiceform" id="plusbutton" >
+                    <p class="plussymbol" >+</p>
+            </div>
+            <div class="newinvoiceform" id="newinvoicetext">
+               New Invoice
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <%- include('form') %>
+
+      <div id="invoicesecondhalf" >
+    
+        <% details.forEach((element)=>{%>
+             <div  class="elementwholediv" >
+            <div class="elementdiv" >
+              <div class="elementalign" >
+                  #<p class="idtext" ><%=element.clientid %></p>
+              </div>
+              <div class="elementalign" >
+                <% let date= element.date %>
+                 <%let dateParts= date.toISOString().substring(0, 10);%>
+                 <% let datevalue=new Date(dateParts) %>
+                 <% let options={day:"numeric",month:"short",year:"numeric"}%>
+                 <%= datevalue.toLocaleString('en-US',options)%>
+              </div>       
+             <div class="elementalign" >
+                <%=element.clientName%>
+              </div>             
+             <div class="elementalign" >
+              <% let item = element.item %>
+              <% let itemValues = JSON.parse(item) %>
+              <% let itemLength = itemValues.length %>
+              <% let total = 0 %>
+              <% itemValues.forEach((item) => { %>
+                <% total += Number(item.itemtotal) %>
+              <% }) %>
+              <p class="totaltext" >£<%= total %></p>
+              </div>             
+             <div class="elementalign" >
+              <% if(element.status=='Draft'){ %>
+                  <li class="draftstyle" > <%=element.status %></li>
+             <% } %>
+             <% if(element.status=='Pending'){ %>
+                <li class="pendingstyle" > <%=element.status %></li>
+           <% } %>
+           <% if(element.status=='Paid'){ %>
+            <li class="paidstyle" > <%=element.status %></li>
+          <% } %>
+              </div>
+              <div class="elementalign" >
+               <img onclick="clientDetails('<%=element.id%>')" class="rightarrowimg" src="./assets/icon-arrow-right.svg"/>
+              </div>
+            </div>
+             </div>
+        <%})%>
+      </div>
+    </div>
+  
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
+<script>
+  function clientDetails(idnumber){
+    var id=Number(idnumber);
+    window.location.href=`/viewInvoice/${id}`;
+  }
+  theme()
+
+
+</script>

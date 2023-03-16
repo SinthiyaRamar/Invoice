@@ -1,0 +1,289 @@
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<div class="formpage" >
+<div class="formdiv"  id="formwholediv">
+
+    <div class="formfirsthalf" >
+       <div  class="formdetails" >
+              <h2 class="newinvoicetextform" >New Invoice</h2>
+              <h5 class="billformtext" >Bill Form</h5>
+              <p class="text streetaddress" >Street Address</p>
+              <input class="forminput"  value="19 Union Terrace" type="text" readonly/>
+              <div class="shopdetails" >
+                 <div class="detailsvalue" >
+                    <p class="text">City</p>
+                    <input class="cityinput" value="London" type="text" readonly/>
+                  </div>
+                 <div class="detailsvalue" >
+                    <p class="text">Post Code</p>
+                    <input class="postcodeinput" value="E1 3EZ" type="text" readonly/>
+                 </div>
+                 <div class="detailsvalue" >
+                     <p class="text">Country</p>
+                     <input class="countryinput" value="United Kingdom" type="text" readonly/>
+                  </div>
+
+          </div>
+          <h5 class="billformto" >Bill To</h5>
+           <p class="text">Client's Name</p>
+           <input id="clientnames" type="text" class="forminput" required/>
+           <p class="text">Client's Email</p>
+           <input  id="clientemails" type="text" class="forminput" required/>
+           <p class="text">Street Address</p>
+           <input id="clientstreetaddress" type="text" class="forminput" required/>
+           <div class="shopdetails" >
+            <div class="detailsvalue" >
+             <p class="text">City</p>
+             <input id="clientcity" class="cityinput" type="text" required/>
+            </div>
+            <div class="detailsvalue" >
+             <p class="text">Post Code</p>
+             <input id="clientpostcode" class="postcodeinput" type="text" required/>
+            </div>
+            <div class="detailsvalue" >
+             <p class="text">Country</p>
+             <input id="clientcountry" class="countryinput" type="text" required/>
+            </div>
+ 
+           </div>
+           <div class="moredetails" >
+           <div class="detailsvalue" >
+             <p class="text" >InvoiceDate</p>
+             <input id="orderdate" name="date" class="dateinput" type="date" required/>
+
+           </div>
+            <div class="detailsvalue" >
+              <p class="text" >Payment Terms</p>
+              <select id="paymentselects" class="paymentselect" >
+                <option value="Net 1 Days" >Net 1 Days</option>
+                <option value="Net 7 Days" >Net 7 Days</option>
+                <option value="Net 14 Days" >Net 14 Days</option>
+                <option value="Net 30 Days" >Net 30 Days</option>
+
+              </select>
+            </div>
+           </div>
+           <p class="text">Project Description</p>
+           <input id="clientprojectdescription" type="text" class="forminput" required/>
+           <h4 class="itemtasktext" >Item List</h4>
+           <div class="itemdiv" >
+                 <div class="itemtitle" >
+                    <p class="text">Item Name</p>
+                    <p class="text">Qty.</p>
+                    <p class="text">Price</p>
+                    <p class="text">Total</p>
+                 
+                 </div>
+                 <input id="itemcountvalue" style="display:none" type="number" value=1 />
+                 <div id="itemCount1" class="itemtitle" >
+                     <input id="itemname1" class="iteminput" type="text" required/>
+                     <input id="qty1" oninput="changetotal(1)" class="iteminput" type="number" required/>
+                     <input id="price1" oninput="changetotal(1)" class="iteminput" type="number" required/>
+                     <input id="total1"  class="iteminput" type="number"/>
+                     <div class="deleteitemimg" ><img onclick="deleteItem('itemCount1')" class="deleteimg" src="./assets/icon-delete.svg"/></div>
+
+                 </div>
+           </div>
+           <p></p>
+           <div onclick="newItemAdd()" class="newitemadddiv" ><p>+Add New Item</p></div>
+        </div>
+        <div class="buttondiv" >
+              <div class="buttondivs" >
+             <div class="discarddiv" id="discardbutton" >Discard</div>
+              </div>
+              <div></div>
+              <div class="buttondivs" >
+                <div onclick="draft()" class="draftdiv" >Save as Draft</div>
+
+              </div>
+              <div class="buttondivs" >
+                <div onclick="send()" class="savediv"  >Save & Send</div>
+
+              </div>
+        </div>
+        </div>
+        <div class="formsecondhalf" >
+
+        </div>
+
+
+</div>
+</div>
+<script>
+    
+ function draft(){
+    var totalitemCount=Number($('#itemcountvalue').val());
+        var itemarray=[];
+        console.log(totalitemCount)
+        for(let i=1; i<=totalitemCount; i++){
+           if($(`#itemname${i}`).val()!=undefined && $(`#qty${i}`).val()!=undefined && $(`#total${i}`).val()!=undefined ){
+           let itemobject={
+            itemname:$(`#itemname${i}`).val(),
+            itemqty:$(`#qty${i}`).val(),
+            itemprice:$(`#price${i}`).val(),
+            itemtotal:$(`#total${i}`).val(),
+
+           }
+           itemarray.push(itemobject);
+        
+        }
+        }
+        var alphabet=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    var clientidvalue=`'${alphabet[Math.round(Math.random()*25)]}${alphabet[Math.round(Math.random()*25)]}${Math.round(Math.random()*10)}${Math.round(Math.random()*10)}${Math.round(Math.random()*10)}${Math.round(Math.random()*10)}'`
+    //    console.log(clientidvalue)
+    console.log(itemarray)
+        var draftDetails={
+            clientid:clientidvalue,
+            clientname:$('#clientnames').val(),
+            clientdetails:$('#clientemails').val(),
+            clientstreetaddress:$('#clientstreetaddress').val(),
+            clientcity:$('#clientcity').val(),
+            clientpostcode:$('#clientpostcode').val(),
+            clientcountry:$('#clientcountry').val(),
+            clientdate:$('#orderdate').val(),
+            clientpayment:$('#paymentselects').val(),
+            clientprojectdescription:$('#clientprojectdescription').val(),
+            clientstatus:"Draft",
+            clientitem:itemarray,
+        }
+        console.log(draftDetails);
+if($('#clientnames').val()!="" && $('#clientemails').val()!="" && $('#clientstreetaddress').val()!="" && $('#clientcity').val()!="" && $('#clientpostcode').val()!="" && $('#clientcountry').val()!="" && $('#orderdate').val()!="" && $('#paymentselects').val()!="" &&$('#clientprojectdescription').val()!="" ){
+        fetch('/draft', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+            body: JSON.stringify({ draftobject: draftDetails })
+                                })
+            .then(response => {
+            if (response.ok) {
+                  console.log('Draft object sent successfully');
+                  $('.formpage').css("display","none");
+                  emptyinput();
+                  window.location.href="/index";
+
+
+            } else {
+                   console.error('Error sending draft object');
+            }
+            })
+            .catch(error => {
+              console.error(error);
+           });
+        }
+        else{
+        alert("Something error")
+    }
+}
+ 
+    function send(){
+        
+        var totalitemCount=Number($('#itemcountvalue').val());
+        var itemarray=[];
+        console.log(totalitemCount)
+        for(let i=1; i<=totalitemCount; i++){
+           if($(`#itemname${i}`).val()!=undefined && $(`#qty${i}`).val()!=undefined && $(`#total${i}`).val()!=undefined ){
+           let itemobject={
+            itemname:$(`#itemname${i}`).val(),
+            itemqty:$(`#qty${i}`).val(),
+            itemprice:$(`#price${i}`).val(),
+            itemtotal:$(`#total${i}`).val(),
+
+           }
+           itemarray.push(itemobject);
+
+        }
+        }
+        console.log(itemarray)
+        var alphabet=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+    var clientidvalue=`'${alphabet[Math.round(Math.random()*25)]}${alphabet[Math.round(Math.random()*25)]}${Math.round(Math.random()*10)}${Math.round(Math.random()*10)}${Math.round(Math.random()*10)}${Math.round(Math.random()*10)}'`;
+        var sendDetails={
+            clientid:clientidvalue,
+            clientname:$('#clientnames').val(),
+            clientdetails:$('#clientemails').val(),
+            clientstreetaddress:$('#clientstreetaddress').val(),
+            clientcity:$('#clientcity').val(),
+            clientpostcode:$('#clientpostcode').val(),
+            clientcountry:$('#clientcountry').val(),
+            clientdate:$('#orderdate').val(),
+            clientpayment:$('#paymentselects').val(),
+            clientprojectdescription:$('#clientprojectdescription').val(),
+            clientstatus:"Pending",
+            clientitem:itemarray,
+        }
+        console.log(sendDetails);
+       
+   if($('#clientnames').val()!="" && $('#clientemails').val()!="" && $('#clientstreetaddress').val()!="" && $('#clientcity').val()!="" && $('#clientpostcode').val()!="" && $('#clientcountry').val()!="" && $('#orderdate').val()!="" && $('#paymentselects').val()!="" &&$('#clientprojectdescription').val()!=""){
+
+        fetch('/senddetails', {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json;charset=utf-8' },
+             body: JSON.stringify({ sendobject: sendDetails })
+             })
+            .then(response => {
+             if (response.ok) {
+               console.log('Send object sent successfully');
+               $('.formpage').css("display","none");
+               window.location.href="/index";
+               emptyinput()
+
+             } else {
+               console.error('Error sending send object');
+             }
+             })
+            .catch(error => {
+               console.error(error);
+         });
+    }
+    else{
+        alert("Something error")
+    }
+    
+}
+
+    function newItemAdd(){
+        let itemCount=Number($('#itemcountvalue').val())+1;
+        $('#itemcountvalue').val(itemCount)
+        $('.itemdiv').append(`<div id="itemCount${itemCount}" class="itemtitle" >
+                     <input id="itemname${itemCount}" class="iteminput" type="text"/>
+                     <input id="qty${itemCount}" oninput="changetotal(${itemCount})" class="iteminput" type="number"/>
+                     <input id="price${itemCount}" oninput="changetotal(${itemCount})" class="iteminput" type="number"/>
+                     <input id="total${itemCount}" class=clientid"iteminput" type="number"/>
+                     <div class="deleteitemimg" ><img onClick="deleteItem('itemCount${itemCount}')" class="deleteimg" src="./assets/icon-delete.svg"/></div>
+
+                 </div>`)
+
+    }
+    function deleteItem(itemcounts){
+        $(`#${itemcounts}`).remove();
+       
+    }
+    function changetotal(count){
+
+        $(`#total${count}`).val(Number($(`#qty${count}`).val())*Number($(`#price${count}`).val()));
+        // alert(Number($(`#qty${count}`).val())*Number($(`#price${count}`).val()))
+    }
+
+    $('input[name=date]').on(function () {
+    // check if the date is correct. We accept dd-mm-yyyy or yyyy-mm-dd.
+    // update the format to yyyy-mm-dd
+    var date = parseDate($('#orderdate').val());
+
+    if (! isValidDate(date)) {
+        // Date isn't valid. Set the current date instead
+        date = moment().format('YYYY-MM-DD');
+    }
+
+    $('#orderdate').val(date);
+    alert($('#orderdate').val())
+});
+
+function emptyinput(){
+    $('#clientnames').val("")
+    $('#clientemails').val("");
+    $('#clientstreetaddress').val("");
+    $('#clientcity').val("");
+    $('#clientpostcode').val("");
+    $('#clientcountry').val("");
+    $('#orderdate').val("");
+    $('#paymentselects').val("");
+    $('#clientprojectdescription').val("");
+}
+  </script>
